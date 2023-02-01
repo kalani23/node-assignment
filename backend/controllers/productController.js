@@ -3,17 +3,16 @@ const ErrorHandler = require("../utils/errorHandler");
 const cacheAsyncErrors = require("../middlewares/catchAsyncErrors");
 const APIFeatures = require("../utils/apiFeatures");
 
-// create new product
+// create new product => /api/items (POST)
 exports.newProduct = cacheAsyncErrors(async (req, res, next) => {
-  req.body.user = req.user.id;
-
   const product = await Product.create(req.body);
   res.status(201).json({
     success: true,
     product,
   });
 });
-//get all products => /api/v1/products?keyword=apple
+
+//get all products => /api/items?keyword=apple (GET)
 exports.getProducts = cacheAsyncErrors(async (req, res, next) => {
   const resPerPage = 4;
   const productCount = await Product.countDocuments();
@@ -32,7 +31,7 @@ exports.getProducts = cacheAsyncErrors(async (req, res, next) => {
     productCount,
   });
 });
-
+//get single product => /api/items/:id (GET)
 exports.getSingleProduct = cacheAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
@@ -46,6 +45,7 @@ exports.getSingleProduct = cacheAsyncErrors(async (req, res, next) => {
   });
 });
 
+//update product => /api/items/:id (PUT)
 exports.updateProduct = cacheAsyncErrors(async (req, res, next) => {
   let product = await Product.findById(req.params.id);
 
@@ -65,6 +65,7 @@ exports.updateProduct = cacheAsyncErrors(async (req, res, next) => {
   });
 });
 
+//delete product => /api/items/:id (DELETE)
 exports.deleteProduct = cacheAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
